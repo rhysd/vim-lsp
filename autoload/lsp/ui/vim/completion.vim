@@ -107,11 +107,7 @@ function! s:on_complete_done_after() abort
     else
       let l:overflow_before = 0
       let l:overflow_after = 0
-      let l:text = get(l:completion_item, 'insertText', '')
-      if empty(l:text)
-        " When insertText is `falsy` the label is used as the insert text
-        let l:text = get(l:completion_item, 'label', l:completed_item['word'])
-      endif
+      let l:text = s:get_completion_text(l:completion_item)
     endif
 
     " apply snipept or text_edit
@@ -171,11 +167,7 @@ function! s:is_expandable(done_line, done_position, complete_position, completio
     let l:text_edit_after = strcharpart(l:completed_line, a:completion_item['textEdit']['range']['end']['character'], strchars(l:completed_line) - a:completion_item['textEdit']['range']['end']['character'])
     return a:done_line !=# l:text_edit_before . s:trim_unmeaning_tabstop(a:completion_item['textEdit']['newText']) . l:text_edit_after
   endif
-  let l:text = get(a:completion_item, 'insertText', '')
-  if empty(l:text)
-    let l:text = get(a:completion_item, 'label', a:completed_item['word'])
-  endif
-  return l:text !=# s:trim_unmeaning_tabstop(a:completed_item['word'])
+  return s:get_completion_text(a:completed_item)
 endfunction
 
 "
@@ -278,6 +270,17 @@ function! s:simple_expand_text(text) abort
         \   'character': l:pos['character'] + l:offset
         \ })
   call cursor(l:pos)
+endfunction
+
+"
+" Get completion text from CompletionItem object
+"
+function! s:get_completion_text(completion_item) abort
+  if has_key(a:completion_item, 'insertText') && !empty(a:completion_item['insertText'])
+    return a:completion_item['insertText']
+  endif
+  " When insertText is `falsy` the label is used as the insert text
+  return get(a:completion_item, 'label', a:completion_item['word'])
 endfunction
 
 "
