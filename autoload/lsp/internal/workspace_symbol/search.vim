@@ -22,7 +22,7 @@ function! lsp#internal#workspace_symbol#search#do(options) abort
     let l:TextChangeSubject = lsp#callbag#makeSubject()
 
     " use callbag debounce instead of quickpick debounce
-    call lsp#internal#ui#quickpick#open({
+    call lsp#internal#ui#quickpick#open(extend({
         \ 'items': [],
         \ 'input': get(a:options, 'query', ''),
         \ 'key': 'text',
@@ -30,7 +30,7 @@ function! lsp#internal#workspace_symbol#search#do(options) abort
         \ 'on_change': function('s:on_change', [l:TextChangeSubject]),
         \ 'on_accept': function('s:on_accept'),
         \ 'on_close': function('s:on_close'),
-        \ })
+        \ }, g:lsp_quickpick_options))
 
     let s:Dispose = lsp#callbag#pipe(
         \ l:TextChangeSubject,

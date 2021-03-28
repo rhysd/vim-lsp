@@ -913,6 +913,12 @@ g:lsp_work_done_progress_enabled         *g:lsp_work_done_progress_enabled*
     notifications. This can be intercepted by listening to |lsp#stream()|.
     Set to `1` to enable.
 
+g:lsp_quickpick_options			*g:lsp_quickpick_options*
+    Type: |Dictionary|
+    Default: `{}`
+
+    Options passed to quickpick.
+
 ==============================================================================
 FUNCTIONS                                               *vim-lsp-functions*
 

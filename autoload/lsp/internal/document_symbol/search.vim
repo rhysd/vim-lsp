@@ -19,14 +19,14 @@ function! lsp#internal#document_symbol#search#do(options) abort
 
     redraw | echo 'Retrieving document symbols ...'
 
-    call lsp#internal#ui#quickpick#open({
+    call lsp#internal#ui#quickpick#open(extend({
         \ 'items': [],
         \ 'busy': 1,
         \ 'input': '',
         \ 'key': 'text',
         \ 'on_accept': function('s:on_accept'),
         \ 'on_close': function('s:on_close'),
-        \ })
+        \ }, g:lsp_quickpick_options))
 
     let s:Dispose = lsp#callbag#pipe(
         \ lsp#callbag#fromList(l:servers),

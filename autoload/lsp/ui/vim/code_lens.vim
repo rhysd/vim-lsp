@@ -89,12 +89,12 @@ function! s:quickpick_open(items, bufnr, next, error, complete) abort
         call add(l:items, { 'title': l:title, 'item': l:item })
     endfor
 
-    call lsp#internal#ui#quickpick#open({
+    call lsp#internal#ui#quickpick#open(extend({
         \ 'items': l:items,
         \ 'key': 'title',
         \ 'on_accept': function('s:quickpick_accept', [a:next, a:error, a:complete]),
         \ 'on_cancel': function('s:quickpick_cancel', [a:next, a:error, a:complete]),
-        \ })
+        \ }, g:lsp_quickpick_options))
 
     return function('s:quickpick_dispose')
 endfunction

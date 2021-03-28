@@ -125,11 +125,11 @@ function! s:handle_code_action(ctx, server_name, command_id, sync, query, bufnr,
         endif
         call add(l:items, { 'title': l:title, 'item': l:action })
     endfor
-    call lsp#internal#ui#quickpick#open({
+    call lsp#internal#ui#quickpick#open(extend({
         \ 'items': l:items,
         \ 'key': 'title',
         \ 'on_accept': funcref('s:accept_code_action', [a:sync, a:bufnr]),
-        \ })
+        \ }, g:lsp_quickpick_options))
 endfunction
 
 function! s:accept_code_action(sync, bufnr, data, ...) abort
